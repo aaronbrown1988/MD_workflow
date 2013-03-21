@@ -7,14 +7,18 @@
 | future reference.  An experiment that is not written up or used in further |
 | work may as well not be run at all!!                                       |
 |                                                                            |
-| To aid this process we subscribe to 'Heilmeier's catechisms'               |
+| To aid this process we'll subscribe to 'Heilmeier's catechisms'            |
 #----------------------------------------------------------------------------|
 Date:  
+
 Project title:
+
 Members:
+
 VLSCI Project:
 
-#----------------------------------------------------------------------------|
+#-Heilmeier-catechisms-------------------------------------------------------|
+
 1) What are you trying to do? 
 
 
@@ -42,10 +46,6 @@ VLSCI Project:
 9) What are the midterm and final indicators to check for success?
 
 
-10) What figures or representation can you make from the results?  Is this 
-work going result in a publication. 
-
-
 # Experimental Design: 
 #-------------------------------------------------------------------------|
 
@@ -63,6 +63,9 @@ Statistical sampling?
 
 Analysis?  What will you measure from this? 
 
+
+What figures or representation can you make from the results?  Is this 
+work going result in a publication. 
 
 
 
