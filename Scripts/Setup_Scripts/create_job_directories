@@ -1,0 +1,86 @@
+#!/bin/bash
+#                                                             Mkuiper Jan  2013
+# Simple script to create job directories. 
+# ( make changes to master_config.txt for making up to 1 to 99999 directories )
+#---------------------------------
+
+# Variables are defined in  <main>/Setup_and_Config/master_config_file
+
+# Check for master_config_file and source variables 
+
+if [ -f master_config_file ];
+ then
+   . master_config_file
+else 
+ echo -e " "master_config_file" in <main>/Setup_and_Config/  not found." 
+ echo -e " exiting." 
+ exit 
+fi
+
+# Check if running in the /Setup_and_Config directory: 
+cdir=`pwd`
+y=`basename $cdir`
+if [ $sims -gt "999" ]; 
+then
+ echo -e " Can not create more than 1,000 directories! " 
+ echo -e " with this version of ./create_job_directories  \n" 
+fi 
+
+#--------------------------------------------------------------------------------------------------
+if [ $y = "Setup_and_Config" ];
+then
+
+ cd ../
+
+# Check for existing job directories 
+if [ "$(ls -A $DIR -I .gitkeep)" ]; then
+ echo -e  "\n$DIR is not empty! \nSetting up new directories aborted to avoid overwriting existing data!" 
+ echo -e  "\n\"./create_job_directories\" script is usually only run once before populating and starting jobs." 
+ echo -e  "You can use \"./erase_all_data_cleanup_script\" to remove all job directories. (and data! -be careful!) \n" 
+else
+
+# Create new directories based on Template directory structure under Setup_and_Config/JobTemplate/
+
+echo -e  " Creating new job directories: \n" 
+
+while [ $sims -gt 0 ];
+do
+ if [ $sims -lt 10 ]; 
+ then
+  cp -r Setup_and_Config/JobTemplate MainJob_dir/$BaseDirName.00$sims
+  echo "Creating directory: $BaseDirName.00$sims"
+  echo $BaseDirName.00$sims >> MainJob_dir/$BaseDirName.00$sims/.jobdir_id
+ fi 
+
+ if [ $sims -gt 9 -a $sims -lt 100 ];
+ then 
+  cp -r Setup_and_Config/JobTemplate MainJob_dir/$BaseDirName.0$sims
+  echo "Creating directory: $BaseDirName.0$sims"
+  echo $BaseDirName.0$sims >> MainJob_dir/$BaseDirName.0$sims/.jobdir_id
+ fi
+
+ if [ $sims -gt 99 -a $sims -lt 1000 ];
+ then 
+  cp -r Setup_and_Config/JobTemplate MainJob_dir/$BaseDirName.$sims
+  echo "Creating directory: $BaseDirName.$sims"
+  echo $BaseDirName.$sims >> MainJob_dir/$BaseDirName.$sims/.jobdir_id
+ fi
+
+ let sims=sims-1 
+
+done
+echo -e "\n done creating directories!  \n"
+
+
+# Make a hidden list of the job_directory 
+ls MainJob_dir/ > .dir_list.txt
+
+ echo -e "\n\n Don't forget to populate your Job directories with your sbatch and config files! \n " 
+fi
+
+else 
+ echo -e "\n You really should run this script from the /Setup_and Config directory.  Nothing done.\n" 
+fi 
+  
+exit
+

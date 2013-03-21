@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# - Script to populate configuration files in job directories.   Jan 2013
+#
+# This script is used to populate the job directories in /MainJob_dir 
+# with input files.  It substitutes the variables in "master_config_file"
+# into sbatch and configuration scripts before copying them to the 
+# directories
+# -------------------------------------------------------------------------
+
+# -- check for master_config_file:  source variables 
+
+if [ -f master_config_file ];
+then
+ . master_config_file
+else
+ echo -e  "\nCan't see 'master_config_file'.  Exiting! \n"   
+ exit
+fi
+
+# -- check if running in the /Setup_and_Config directory: 
+
+cdir=`pwd`
+y=`basename $cdir`
+
+if [ $y = "Setup_and_Config" ]; then
+# check for the job directory listing:
+ if [ -f ../.dir_list.txt ]; 
+  then
+  y=$(cat ../.dir_list.txt) 
+
+#-- create temporary sbatch files and make changes based on "master_config_file"
+#   make substitutions to both files:
+
+for z in $sbatch_start $sbatch_prod
+do
+ cp $z  $z.temp
+ sed -i  's/#SBATCH --nodes=X/#SBATCH --nodes='"$nodes"'/' $z.temp
+ sed -i  's/#SBATCH --time=X/#SBATCH --time='"$walltime"'/' $z.temp
+ sed -i  's/#SBATCH --account=X/#SBATCH --account='"$account"'/' $z.temp
+ sed -i  's/ntpn=X/ntpn='"$ntpn"'/' $z.temp
+ sed -i  's/ppn=X/ppn='"$ppn"'/' $z.temp
+ sed -i  's/module load X/module load '"$modulefile"'/' $z.temp
+done
+
+
+#-- check for existing directories: 
+if [ "$(ls -A ../$DIR/)" ]; then
+
+ for i in $y
+ do
+#-- copy across new sbatch and configurations:
+  echo -e "\nCopying sbatch files to   \t\t\t/$DIR/$i "
+  cp $sbatch_start.temp  ../$DIR/$i/$sbatch_start
+  cp $sbatch_prod.temp   ../$DIR/$i/$sbatch_prod
+
+  echo -e "Copying config *.conf files to  \t\t/$DIR/$i "
+  cp $optimize_script   ../$DIR/$i/
+  cp $production_script ../$DIR/$i/
+
+  echo -e "Copying master_config_file file to  \t\t/$DIR/$i "
+  cp master_config_file   ../$DIR/$i/
+ done
+
+#-- clean up:
+  rm $sbatch_start.temp $sbatch_prod.temp
+ else
+  echo -e  "\n $DIR appears empty! " 
+  echo -e  "\n Nothing to do here.  have you run ./create_job_directories yet? \n Exiting! " 
+  exit 
+fi
+
+#-- Error messaages--------------------------------------------------------------------
+
+else 
+  echo -e  "\n $DIR appears empty! No ../.dir_list.txt file. " 
+  echo -e  "\n Nothing to do here.  have you run ./create_job_directories yet? \n Exiting! " 
+  exit
+ fi 
+fi

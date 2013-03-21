@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# simple script to start all jobs in the MainJob_dir directory. 
+#---------------------------------
+# check for master_config_file:
+
+if [ -f Setup_and_Config/master_config_file ]; 
+then
+. Setup_and_Config/master_config_file
+else
+ echo -e "\n Can't find "master_config_file" in /Setup_and_Config directory. \nExiting! \n"
+ exit
+fi
+
+# -- check that submit script is running from the top directory. 
+cdir=`pwd`
+y=`basename $cdir`
+
+# --Check for existing directories: 
+if [ "$(ls -A $DIR)" ]; 
+ then
+
+ if [ -f .dir_list.txt ]; then 
+  y=$(cat .dir_list.txt) 
+ else 
+  echo -e "\n Can't find .dir_list.txt in this directory." 
+  echo -e "\n Did you create job directories from /Setup_and_Config yet?" 
+  exit
+fi
+
+# -create job_submit_list to record sbatch job_ids.  (useful for cancelling jobs stuck in the queue). 
+
+ echo -e "" > .job_submit_list.txt
+
+
+# make quick copy of showq for checking
+ me=$( whoami )
+ showq -u "$me" > .temp_showq.txt
+
+# - Launch Jobs: 
+cd $DIR
+
+for i in $y
+do
+
+# launch jobs in MainJob_dir:---------------------------------------------------------
+cd $i
+
+# check if job is already running: 
+ if [ -f .current_job_id.txt ];
+ then
+# -if current job_id flag detected:
+
+ j=$(cat .current_job_id.txt | tail -n 1 )
+ e=$(cat ../../.temp_showq.txt  |grep $j | awk '{print $3 }');
+ if [ "$e" == "RUNNING" ];
+ then
+  echo -e " $i - appears a job is already running here!: $j" 
+ else
+  if [ -f pausejob ]; 
+  then
+   rm pausejob
+  fi
+
+sbatch $sbatch_start | awk '{ print $4 }' >> ../../.job_submit_list.txt
+echo -e " Launching job in directory $DIR/$i "
+echo -e "job launched">.job_status
+
+  fi
+ else
+
+# - if no current job_id flag detected:
+   if [ -f pausejob ]; then
+    rm pausejob
+   fi
+
+sbatch $sbatch_start | awk '{ print $4 }' >> ../../.job_submit_list.txt
+echo -e " Launching job in directory $DIR/$i "
+echo -e "job launched">.job_status
+
+  fi
+
+cd ../
+
+# - a little pause to help the scheduler: 
+sleep 0.05
+done
+
+else
+ echo -e  "\n There are no job directories set up to start!" 
+ echo -e  " Go to /Setup_and_Config to create new job directories. \n"
+ exit
+fi
+
+

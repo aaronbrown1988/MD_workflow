@@ -1,0 +1,221 @@
+#!/bin/bash
+#                                                                 Mkuiper Jan 2013
+#
+# This script is designed to precheck your jobs given the input you have specified in 
+# the master_config_file to make sure varibles seem reasonable and that you have 
+# enough quota. 
+#---------------------------------
+
+# check for master_config_file and source variables for both optimization 
+# and production scripts: 
+
+if [ -f master_config_file ];then
+. master_config_file
+else 
+ echo -e "\n Can't find "master_config_file" in this directory.\n"
+fi
+
+# Extract simulation values from configuration files:------------------------------------
+
+opt_dcd=$( less    $optimize_script   |grep dcdfreq | awk '{print $2;}'  )
+prod_dcd=$( less   $production_script |grep dcdfreq |awk '{print $2;}' )
+
+opt_input=$( less  $optimize_script   |grep 'coordinates\|structure'    | awk '{print $2;}' )
+prod_input=$( less $production_script |grep 'coordinates\|structure' | awk '{print $2;}' )
+
+opt_param=$( less  $optimize_script   |grep parameters | awk '{print $2;}' )
+prod_param=$( less $production_script |grep parameters | awk '{print $2;}' )
+
+# --check for existance of sbatch and configuration files: -----------------------------
+# some error messages:
+sb_st="not-found!---check-your-files!"
+sb_pr="not-found!---check-your-files!"
+op_scr="not-found!---check-your-files!"
+pr_scr="not-found!---check-your-files!"
+
+if [ -f  $sbatch_start ]; then 
+sb_st=" "
+fi
+if [ -f  $sbatch_prod ]; then 
+sb_pr=" "
+fi 
+if [ -f  $optimize_script ]; then 
+op_scr=" "
+fi 
+if [ -f $production_script ]; then
+pr_scr=" "
+fi
+
+# -- work out approximate size of output:
+#-----------------------------------------------------------------------------------------------------
+opt_dcd=$( less $optimize_script |grep dcdfreq | awk '{print $2;}'  )
+prod_dcd=$( less $production_script |grep dcdfreq |awk '{print $2;}' )
+opt_steps=$( less $optimize_script |grep dcdfreq | awk '{print $2;}'  )
+prod_steps=$( less $production_script |grep NumberSteps | head -n 1 |awk '{print $3;}' )
+pdb_file=$( less $production_script |grep coordinates | awk '{print $2;}' ) 
+prod_fs_step=$( less $production_script | grep timestep | tail -n 1 |awk '{print $2;}' ) 
+
+# -- write temporary single frame dcd file using catdcd for an accurate estimates  
+# -- note: catdcd does not work on avoca!
+
+cd JobTemplate
+
+../../Scripts/Tools/catdcd -o temp_dcd.dcd -pdb $pdb_file 
+size_per_frame=$( stat -c%s temp_dcd.dcd | awk '{print $1/(1024*1024)}' ) 
+pdb_size=$( stat -c%s $pdb_file | awk '{print $1/(1024*1024)}' ) 
+rm temp_dcd.dcd 
+
+frames=$( echo "$runs $sims $prod_steps $prod_dcd" |awk '{print ($1 *$2* ($3/$4) ) }')
+run_size=$( echo " $size_per_frame $frames " |awk '{print $1*$2/1024}')
+sim_time=$( echo " $prod_fs_step $prod_steps $sims $runs" |awk '{print ($1*$2*$3*$4)/1000000}')  
+opt_run_size=$( echo " $size_per_frame $opt_steps $opt_dcd $sims " |awk '{print ($1 * ($2/$3) * $4)/ 1024}') 
+
+# make integer of run_size and sim_time
+int_run_size=${run_size/\.*}
+int_sim_time=${sim_time/\.*}
+
+# check diskspace on current account - works on merri or avoca! 
+warning=" " 
+diskspace=$( mydisk | grep $account | awk '{print $5}' | sed s/\%// )  
+gb_left=$( mydisk | grep $account | awk '{print $4}' | sed s/G//  )  
+my_disk=$( mydisk | grep $account ) 
+
+intsize=$( echo $run_size | awk '{print int($1)}' )
+
+if [ "$account" == "Change_me" ]; then 
+warning=" make sure to specify an account in master_config_file !"
+fi 
+
+if [ "$diskspace" -gt "90" ]; then 
+warning=" Warning diskspace for this account is low! Check disk quotas  (mydisk)  " 
+fi 
+
+if  [ "$intsize" -gt "$gb_left" ]; then 
+warning=" You don't appear to have enough disk quota left! Check disk quotas (mydisk)  " 
+fi 
+
+# --make human readable!---------------------------------------------------------- 
+size="Gigabytes" 
+time_units="nanoseconds"
+
+if [ "$int_run_size" -gt "1024" ] 
+then 
+size="Terabytes" 
+run_size=$( echo "$int_run_size" |awk '{ print $1/1024}')
+fi
+
+# if [ "$int_run_size" -gt "1048576" ] 
+# then 
+# size="Petabytes" 
+# run_size=$( echo $int_run_size |awk '{ print $1/1048576}')
+# fi
+
+if [ "$int_sim_time" -gt "1000" ] 
+then 
+sim_time=$( echo "$int_sim_time" |awk '{ print $1/1000}')
+time_units="microseconds"
+fi
+if [ "$int_sim_time" -gt "1000000" ] 
+then 
+sim_time=$( echo "$int_sim_time" |awk '{ print $1/1000000}')
+time_units="milliseconds"
+fi
+if [ "$int_sim_time" -gt "1000000000" ] 
+then 
+sim_time=$( echo "$int_sim_time" |awk '{ print $1/1000000000}')
+time_units="seconds"
+fi
+
+# cd ../
+#-- colours------------------------------------------------------------------------------------------------- 
+c1="\e[38;5;112m"
+c2="\e[38;5;110m"
+c3="\e[38;5;220m"
+c4="\e[38;5;180m"
+c5="\e[38;5;154m"
+c6="\e[38;5;190m"
+c7="\e[38;5;150m"
+c8="\e[38;5;46m"
+c9="\e[38;5;196m"
+c0="\e[39m"
+
+#--Print out summary:---------------------------------------------------------------------------------------
+ 
+echo -e "\n$c1 Job Precheck Summary:" 
+echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
+printf  "$c2 Directory basename:$c0       %-12s\n" $Base 
+printf  "$c2 Optimize job basename:$c0    %-12s\n" $jobname_opt 
+printf  "$c2 Production job basename:$c0  %-12s\n" $jobname_prod 
+printf  "$c2 sbatch_start script:$c0      %-12s\t $c9 %s $c0\n" $sbatch_start      $sb_st  
+printf  "$c2 sbatch_production script:$c0 %-12s\t $c9 %s $c0\n" $sbatch_prod       $sb_pr
+printf  "$c2 Optimization script:$c0      %-12s\t $c9 %s $c0\n" $optimize_script   $op_sc  
+printf  "$c2 Production script:$c0        %-12s\t $c9 %s $c0\n" $production_script $pr_scr
+printf  "$c2 NAMD modulefile:$c0          %-48s\n" $modulefile 
+echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
+
+printf  "$c7 Estimation of data to be generated from the production run of this simulation:$c0\n" 
+printf  "$c2 Job directories:$c0       %-12s\t$c2 Runs per directory:$c0 %-12s \n" $sims $runs 
+printf  "$c2 Steps per run:$c0         %-12s\t$c2 Dcdfreq in run:$c0     %-12s \n" $prod_steps $prod_dcd  
+printf  "$c2 Dcd frame size(MB):$c0    %-12.2f\t$c2 Total dcd frames:$c0   %-12s \n" $size_per_frame $frames 
+printf  "$c3 \tTotal simulated time:$c0      \t  %8.2f %s \n" $sim_time $time_units
+printf  "$c3 \tTotal production data size:$c0\t  %8.2f %s \n" $run_size $size
+echo -e "$c9 \t  $warning       $c0" 
+
+echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
+printf   "$c7 SBATCH Parameters:$c5 \t$sbatch_start   \t\t\t$sbatch_prod $c0\n"
+printf   "$c2 nodes:   $c0          \t%-9s   \t\t\t%-9s \n" $nodes    $nodes 
+printf   "$c2 walltime:$c0          \t%-9s   \t\t\t%-9s \n" $walltime $walltime
+printf   "$c2 no. tasks per node:$c0\t%-9s   \t\t\t%-9s \n" $ntpn     $ntpn 
+printf   "$c2 processes per node:$c0\t%-9s   \t\t\t%-9s \n" $ppn      $ppn
+printf   "$c2 account:$c0           \t%-9s   \t\t\t%-9s \n" $account  $account  
+
+echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
+
+# check InputFiles exist: 
+echo -e "$c7 Checking input and parameter files mentioned in config scripts exist: $c0 " 
+cd JobTemplate
+echo -e "$c5 $optimize_script: $c0"
+for k in $opt_input
+do 
+if [ -f "$k" ] 
+then 
+ printf " %-42s $c2 found in /InputFiles     $c8 -ok! $c0\n" $k  
+else 
+ printf " %-42s $c4 not found in /InputFiles $c9 check your input files! $c0\n" $k   
+fi
+done 
+for k in $opt_param
+do 
+if [ -f "$k" ] 
+then 
+ printf " %-42s $c2 found in /Parameters     $c8 -ok! $c0\n" $k  
+else 
+ printf " %-42s $c4 not found in /Parameters $c9 check your input files! $c0\n" $k   
+fi
+done
+echo -e "$c5 $production_script: $c0"
+
+for k in $prod_input
+do 
+if [ -f "$k" ] 
+then 
+ printf " %-42s $c2 found in /InputFiles     $c8 -ok! $c0\n" $k  
+else 
+ printf " %-42s $c4 not found in /InputFiles $c9 check your input files! $c0\n" $k   
+fi
+done 
+for k in $prod_param
+do 
+if [ -f "$k" ] 
+then 
+ printf " %-42s $c2 found in /Parameters     $c8 -ok! $c0\n" $k  
+else
+ printf " %-42s $c4 not found in /Parameters $c9 check your input files! $c0\n" $k   
+fi
+done 
+cd ../
+echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
+
+printf "\n\n "  
+exit 
+

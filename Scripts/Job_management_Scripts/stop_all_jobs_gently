@@ -1,0 +1,47 @@
+#!/bin/bash
+
+#  Script to stop all jobs gently in the MainJob_dir directory. 
+#  by allowing them to finish their current job. 
+#  (creates a pausejob file) 
+#---------------------------------
+
+DIR="MainJob_dir"
+
+# Check for existing directories: 
+if [ "$(ls -A $DIR)" ]; then
+
+if [ -f Setup_and_Config ]; 
+ then
+   . Setup_and_Config/master_config_file
+ fi 
+
+echo -e "\n Jobs stopping.  \n Simulations currently running in $DIR will be allowed to finish: \n" 
+sleep 2
+if [ -f .dir_list.txt ]; 
+ then 
+   y=$(cat .dir_list.txt) 
+ else 
+  echo -e " Can't see official job directory list: .dir_list.txt " 
+  echo -e " Did you set up properly?  Exiting " 
+ fi 
+
+cd $DIR
+
+for i in $y
+# pause jobs in MainJob_dir
+
+ do
+  cd $i
+# -- create pause flag:  (this is looked for in the sbatch scripts) 
+  touch pausejob
+  echo -e " Asked job to pause in directory $DIR/$i  "
+  echo -e "M:SetToPause" >.job_status
+  cd ../
+  sleep 0.05
+ done
+
+else
+ echo -e  "\n There are no job directories in $DIR to stop! \n" 
+fi
+
+
