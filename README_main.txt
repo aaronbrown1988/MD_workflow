@@ -51,16 +51,13 @@ A basic workflow is described after the directory structure.
 #-------------------------------------------------------------------------------
 
                    
-|__Top_directory  -- For running simulations. Launch and control jobs from here. 	                 
+|__Top_directory  -- The place for running simulations.	                 
+  |                  Launch and control jobs from here. 
   |
   |__Analysis          - where analysis scripts are run   
   |   |__Data          - where all the processed data ends up
   |
   |__BUILD_DIR         - where models are built. 
-  |
-  |__Setup_and_Config  - a very important directory where setup scripts are kept  
-  |    |__Benchmarking - special directory for benchmarking and optimizing jobs  
-  |    |__JobTemplate  - directory template for individual jobs 
   |
   |__Examples          - random example files 
   |
@@ -68,6 +65,10 @@ A basic workflow is described after the directory structure.
   |    |__Parameters   - where the parameter files are
   | 
   |__MainJob_dir       - where all the jobs are run 
+  |
+  |__Setup_and_Config  - a very important directory where setup scripts are kept  
+  |    |__Benchmarking - special directory for benchmarking and optimizing jobs  
+  |    |__JobTemplate  - directory template for individual jobs 
   |
   |__Scripts           -  all useful scripts kept in here
   |  
@@ -86,7 +87,7 @@ regards to the work and expected outcomes. For this we a simple text document
 called "Project_plan" in the top directory. It is a good place for documenting 
 the your original intentions and noting your project design.  This can be 
 especially important when looking back on an older project and remembering the 
-original rationale.
+original rationale! Do make sure to spend time planning your work.
 
 
 The basic workflow of this directory structure is described here. 
@@ -130,7 +131,7 @@ The basic workflow of this directory structure is described here.
 - This is a really good time to not only benchmark your jobs to find an ideal 
   node configuration but also a good chance to look at your simulation to check 
   that it runs properly and that your model is sound.   Nothing worse than 
-  running a lot of simulations to find that there is an error in the model.   
+  running a lot of simulations to find that there is an error in the model!   
 
 
 2c. Create and prepare job directories.
@@ -170,7 +171,7 @@ run is running. )
 
  The advantage with the first is that you can restart your jobs later with: 
 
-  ./custom_start_all_production_jobs.sh
+  ./restart_all_production_jobs.sh
 
  While the jobs are running you can check on their progress with: 
 
@@ -181,18 +182,19 @@ run is running. )
 #  Crash recovery:   #
 ######################
 
-In the event of a system crash, such as a power outage or hardware failure one can 
-perform a recovery which restores your files to the last known good point. To do 
-this, first make sure all your jobs are stopped, (try ./stop_all_jobs_immediately)
-and then run the script:
+In the event of a system crash, such as a power outage or hardware failure one
+can perform a recovery which restores your files to the last known good point.
+To do this, first make sure all your jobs are stopped, 
+(try ./stop_all_jobs_immediately) and then run the script:
 
-    ./crashed_job_recovery_script.sh
+    ./recover_and_cleanup_all_crashed_jobs.sh
 
-This should take you into each directory to manually inspect the outputfiles where 
-you can declare the last good outputfile. The script will then scrub subsequent "bad" 
-output and restore data from the last "good" simulation. 
+This should take you into each directory to manually inspect the outputfiles 
+where you can declare the last good outputfile. The script will then scrub 
+subsequent "bad" output and restore data from the last "good" simulation. 
  
-For example, when one runs the script after a crash in the OutputFiles/ you might see 
+For example, when one runs the script after a crash in the OutputFiles/ you 
+might see: 
 
 -rw-r--r-- 1 mike mike 21931876 Sep  4 17:54 2012-09-04-05.44.calmodulin_run2_.10.dcd
 -rw-r--r-- 1 mike mike 21931876 Sep  5 05:54 2012-09-04-17.54.calmodulin_run2_.9.dcd
@@ -204,12 +206,16 @@ For example, when one runs the script after a crash in the OutputFiles/ you migh
 
 Looking at the size of the files we notice that job 2012-09-06-17.57.calmodulin_run2_.5.dcd
 has a file size of 3789024 where preceeding files sizes are the same at  21931876
-As we expect the files sizes to be almost identical in size, we can assume that something when
-wrong at that step.  Therfore the last "good" file is 2012-09-06-17.52.calmodulin_run2_.6.dcd
-which we enter when prompted. (cut and paste works well here!) 
+As we expect the files sizes to be almost identical in size, we can assume that 
+something when wrong at that step.  Therfore the last "good" file is 
 
-Be careful to pick the last good file,  - data after that point will be removed and the last 
-good restart files retrieved ready to restart the simulations from that point onwards. 
+2012-09-06-17.52.calmodulin_run2_.6.dcd
+
+which we enter when prompted. (cut and paste works well here.) 
+
+Be careful to pick the last good file,  - data after that point will be removed
+and the last good restart files retrieved ready to restart the simulations from
+that point onwards. 
 
 Note:  Actually most bad files are moved to /Errors with a suffix ".bad"
 You can remove them there with a "rm *.bad" command.  Use with caution!
@@ -218,7 +224,6 @@ Once you have setset your directories, you can then simply restart the jobs usin
 
  ./custom_start_all_production_jobs.sh
    
-
 *** If your jobs are a total mess and you wish to remove all data and 
     start again you may do so from the directory /Setup_and_Config/ using:
 

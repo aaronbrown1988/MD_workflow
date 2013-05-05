@@ -26,7 +26,7 @@ or
 The advantage with the first option is that it does so more cleanly as well
 as being able to be restarted with:
 
-./custom_start_all_production_jobs.sh 
+./restart_all_production_jobs.sh 
 
 While the jobs are running, one can monitor their progress by using: 
 
@@ -44,7 +44,7 @@ perform a recovery which restores your files to the last known good point. To do
 this, first make sure all your jobs are stopped, (try ./stop_all_jobs_immediately)
 and then run the script:
 
-./custom_cleanup_crashed_jobs.sh
+./recover_and_cleanup_crashed_jobs.sh
 
 This should take you into each directory to manually inspect the outputfiles where 
 you can declare the last good outputfile. The script will then scrub subsequent "bad" 
@@ -74,7 +74,7 @@ You can remove them there with a "rm *.bad" command.  Use with caution!
 
 Once you have reset your directories, you can then simply restart the jobs using: 
 
- ./custom_start_all_production_jobs.sh
+ ./restart_all_production_jobs.sh
    
 
 *** If your jobs are a total mess and you wish to remove all data and 
