@@ -9,6 +9,7 @@
 #                                                              #
 #     -you shouldn't have to change anything in here!          #
 #---------------------------------------------------------------
+
 #-- Sbatch parameters:------------------------------------------
 #-- the X values will be substituted with a values from the master_config_file 
 #-- use "./populate_config_files" to populate job directories with input files.   
@@ -57,6 +58,7 @@ if [ "$diskspace" -gt $diskspacecutoff ]; then
 fi 
 
 ### - read job countdowntimer: stop if .countdown.txt <=0 ----------------------------
+
 if [ -f .countdown.txt ];
 then  
  y=$(cat .countdown.txt )
@@ -66,6 +68,7 @@ else
  touch pausejob
  exit 
 fi  
+
 if [ $y -lt 1 ]; then
  echo -e " Job countdown less than 1. Consecutive jobs finished! Exiting." 
  echo -e "P:Finished" >.job_status  
@@ -85,10 +88,10 @@ scontrol show job $SLURM_JOBID >>JobLog/$date2.$jobname_prod.$y.txt; # log job d
 echo -e "P:Running" >.job_status
 # +ppn is for smp version only. 
 # smp version:
-## srun  --ntasks-per-node $ntpn  namd2 +ppn $ppn $production_script >OutputText/$basename.out 2>Errors/$basename.err;
-# pmi version:
+srun  --ntasks-per-node $ntpn  namd2 +ppn $ppn $production_script >OutputText/$basename.out 2>Errors/$basename.err;
 
-srun  --ntasks-per-node $ntpn  namd2 $production_script >OutputText/$basename.out 2>Errors/$basename.err;
+# pmi version:
+#srun  --ntasks-per-node $ntpn  namd2 $production_script >OutputText/$basename.out 2>Errors/$basename.err;
 
 echo -e "P:CleaningUp" >.job_status
 
@@ -158,7 +161,6 @@ then
  echo -e "$j $c finished at $date2 " >> ../../JobLog/Finished_job_list.txt 
  exit
 fi
-
 
 ## -- check for pausejob flag before relaunching:---------------------------------------------- 
 if [ -f pausejob ]; then 

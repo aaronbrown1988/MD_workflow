@@ -42,9 +42,9 @@ basename="$date2.$jobname"
 
 # for avoca
 # smp version:
-# srun  --ntasks-per-node=$ntpn  namd2 +ppn $ppn benchmark.conf >OutputText/$basename.out 2>Errors/$basename.err;
+ srun  --ntasks-per-node=$ntpn  namd2 +ppn $ppn benchmark.conf >OutputText/$basename.out 2>Errors/$basename.err;
 # pami version:
-srun  --ntasks-per-node=$ntpn  namd2 benchmark.conf >OutputText/$basename.out 2>Errors/$basename.err;
+#srun  --ntasks-per-node=$ntpn  namd2 benchmark.conf >OutputText/$basename.out 2>Errors/$basename.err;
 
 ###  - clean up files:---------------------------------------------------------------
 # - mine timing / seed data: 

@@ -173,7 +173,7 @@ echo -e "$c1 -------------------------------------------------------------------
 
 # check InputFiles exist: 
 echo -e "$c7 Checking input and parameter files mentioned in config scripts exist: $c0 " 
-cd JobTemplate
+# cd JobTemplate
 echo -e "$c5 $optimize_script: $c0"
 for k in $opt_input
 do 

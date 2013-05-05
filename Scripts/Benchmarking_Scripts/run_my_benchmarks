@@ -19,6 +19,9 @@ if [ ! -f benchmarking_opt.coor ]; then
  exit
 fi
 
+# read variables from sbatch file:---------------------------------------------------------------- 
+namdver=$( less ../master_config_file |grep modulefile | awk '{print $1}')
+
 # read variables from conf file:---------------------------------------------------------------- 
 cutoff=$( less bench_opt.conf |grep cutoff | awk '{print $2}' )
 switch=$( less bench_opt.conf |grep switchdist | awk '{print $2}' )
@@ -65,13 +68,13 @@ echo -e "nodes\t /node\t ppn \tcores\t  /step \t\t  per day   " >> summary_bench
 
 # adjust nodelist to try depending on size of simulation:------------
 nodelist="16 8 4 2 1" 
-if [ "$natoms" -gt 100000 ];then 
+if [ "$natoms" -gt "100000" ];then 
  nodelist="32 16 8 4 2 1"
 fi
-if [ "$natoms" -gt 500000 ];then 
+if [ "$natoms" -gt "500000" ];then 
  nodelist="64 32 16 8 4" 
 fi
-if [ "$natoms" -gt 1000000 ];then 
+if [ "$natoms" -gt "1000000" ];then 
  nodelist="256 128 64 32 16 8"
 fi
 
