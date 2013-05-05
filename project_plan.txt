@@ -1,5 +1,5 @@
-#                                                                            |
-#  Project Planning:                                      Apr 2013           |
+#----------------------------------------------------------------------------|
+#  Project Planning:                                      May 2013           |
 |----------------------------------------------------------------------------|
 | This document is designed to help the user properly plan their molecular   |
 | dynamics experiments.  We encourage users to fill this out prior to a      |

@@ -1,36 +1,36 @@
 
-# /Simulation directory notes:             Nov 2012 Mk
+# /Simulation directory notes:             May 2013 mk
 
 #  Before you can launch jobs, you must first setup your files and create 
-your job directories, which you can all do from: 
+your job directories, which you can do from: 
 
 /Setup_and_Config 
 
-You can also precheck your input files as well as run a few benchmarks to 
+From there you can also precheck your input files as well as run a few benchmarks to 
 choose optimal numbers of cores to use for the simulation. 
 
 Once you have these set up, you can start all your jobs at once with: 
 
-./start_all_jobs 
+./start_all_jobs.sh 
 
 
 In order to stop your jobs use either: 
 
-./stop_all_jobs_gently
+./stop_all_jobs_gently.sh
  
 or 
 
-./stop_all_jobs_immediately 
+./stop_all_jobs_immediately.sh 
 
 
 The advantage with the first option is that it does so more cleanly as well
 as being able to be restarted with:
 
-./custom_start_all_production_jobs 
+./custom_start_all_production_jobs.sh 
 
 While the jobs are running, one can monitor their progress by using: 
 
-./monitor_all_jobs
+./monitor_all_jobs.sh
 
 This program will tag all crashed jobs with a 'pausejob' file for restarting. 
 
@@ -44,7 +44,7 @@ perform a recovery which restores your files to the last known good point. To do
 this, first make sure all your jobs are stopped, (try ./stop_all_jobs_immediately)
 and then run the script:
 
-./custom_cleanup_crashed_jobs
+./custom_cleanup_crashed_jobs.sh
 
 This should take you into each directory to manually inspect the outputfiles where 
 you can declare the last good outputfile. The script will then scrub subsequent "bad" 
@@ -74,13 +74,13 @@ You can remove them there with a "rm *.bad" command.  Use with caution!
 
 Once you have reset your directories, you can then simply restart the jobs using: 
 
- ./custom_start_all_production_jobs
+ ./custom_start_all_production_jobs.sh
    
 
 *** If your jobs are a total mess and you wish to remove all data and 
 start again you may do so from the directory /Setup_and_Config/Scripts using
 
- ./erase_all_data_cleanup_script 
+ ./erase_all_data_cleanup_script.sh 
 
 CAREFUL, this will do what it says! 
 

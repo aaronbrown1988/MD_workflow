@@ -1,22 +1,24 @@
 #------------------------------------------------------------------------------
-# Namd project job directory notes.  v0.3    		Mar 2013  MKuiper VLSCI
+# Namd project job directory notes.  v0.4    		May 2013  MKuiper VLSCI
 #------------------------------------------------------------------------------
 
-# disclaimer! - I have made this workflow to help manage my own projects, 
+# Disclaimer! - I have made this workflow to help manage my own projects, 
 - you are free to use it, but it may not be entirely suitable for what you are 
 trying to achieve.  Please email feedback, bugs or suggestions to:
 mkuiper@unimelb.edu.au
 
-
+#------------------------------------------------------------------------------
 # Outline:
 #------------------------------------------------------------------------------
+
 This project directory structure is designed to help streamline the management 
-of simualtion setup, running jobs, analysis and the writing of manuscripts.
+of simulation setup, running jobs, analysis and the writing of manuscripts.
 Though this directory structure is optimized for NAMD operating on a large 
 BlueGene/Q cluster, it could quite easily adapted for running other programs 
 such as Amber and Gromacs. 
 
 
+#------------------------------------------------------------------------------ 
 # The philosophy:
 #------------------------------------------------------------------------------ 
 
@@ -25,9 +27,9 @@ thousands of simultaneous molecular dynamics simulations to take advantage of
 the large capacity of the BlueGene/Q cluster.  
 
 The directory structure is desiged to be self-contained; that is having all 
-the files necessary to run a simualtion. The /Project directory is meant to be 
-the area to work on manuscripts and illustrations while the /Simulation 
-directory is where the setup, running and analysing the simulations is done. 
+the files necessary to run a simulation. The /Project directory is meant to be 
+the area to work on manuscripts and illustrations while the /Setup_and_Config 
+directory is where the setup,  
 
 This directory structure is intended for a standard namd job comprising of an 
 equilibration run followed by production runs.  Output files are date-stamped 
@@ -39,43 +41,41 @@ running many smaller jobs rather than fewer longer jobs to get a desired
 simulation length. This approach can also help better utilise the machine 
 resources as well as providing better protection against data corruption in 
 case of hardware or simulation failures over the course of a long run.
-All trajectory data can be consolidated into a single file on completion of the
-runs from the /Analysis folder
+All trajectory data can be trivially consolidated into a single file on 
+completion of the runs from the /Analysis folder
 
 A basic workflow is described after the directory structure. 
 
 #
 # Directory Structure Map Overview:
 #-------------------------------------------------------------------------------
+
                    
-|__Top_directory         -- For running simulations. Launch jobs from here. 	                 
-    |
-    |__Analysis           - where analysis scripts are run   
-    |   |__Data           - where all the processed data ends up
-    |
-    |__BUILD_DIR          - where models are built. 
-    |
-    |__Setup_and_Config    - a very important directory where setup scripts are kept  
-    |    |__Benchmarking   - special directory for benchmarking and optimizing jobs  
-    |    |__Scripts        - useful scripts in here.       
-    |    |__JobTemplate    - directory template for individual jobs 
-    |
-    |__Examples            - random example files 
-    |
-    |__InputFiles         - where all the input files are kept
-    |    |__Parameters    - where the parameter files are
-    | 
-    |__MainJob_dir        - where all the jobs are run 
-    |
-    |__Scripts            -  all useful scripts kept in here
-    |  
-    |__Project              --- For publication purposes
-         |___Manuscripts       - a space for writing and storing images
-         |___MovieBox	       - a space for rendering movies                       
-         |___ProjectPlan       - A space to document and plan the project. 
+|__Top_directory  -- For running simulations. Launch and control jobs from here. 	                 
+  |
+  |__Analysis          - where analysis scripts are run   
+  |   |__Data          - where all the processed data ends up
+  |
+  |__BUILD_DIR         - where models are built. 
+  |
+  |__Setup_and_Config  - a very important directory where setup scripts are kept  
+  |    |__Benchmarking - special directory for benchmarking and optimizing jobs  
+  |    |__JobTemplate  - directory template for individual jobs 
+  |
+  |__Examples          - random example files 
+  |
+  |__InputFiles        - where all the input files are kept
+  |    |__Parameters   - where the parameter files are
+  | 
+  |__MainJob_dir       - where all the jobs are run 
+  |
+  |__Scripts           -  all useful scripts kept in here
+  |  
+  |__Project           --- For publication purposes
+       |___Manuscripts   - a space for writing and storing images
+       |___MovieBox	   - a space for rendering movies                       
+       |___ProjectPlan   - A space to document and plan the project. 
           
-
-
  
 #------------------------------------------------------------------------------
 #   The general work flow:   
@@ -92,20 +92,20 @@ original rationale.
 The basic workflow of this directory structure is described here. 
 (There are more specific README files in each of the directories.) 
 
-1. Build input models.     /BUILD_DIR
+1. Build input models.    /BUILD_DIR
 
-- The place to do this is under /Simulations/BUILD_DIR/
+- The place to do this is under /BUILD_DIR/
 - most topology and parameter files can be found under /Parameters 
 - Once complete, place the relevant inputfiles under /InputFiles 
   and make sure you have the right parameter files under /Parameters
 
-2a. Setup your jobs.       /Setup_and_Config
+2a. Setup your jobs.      /Setup_and_Config
 
 - Under /Setup_and_config you can decide how many simulations to set up
  by editing the  'master_config_file'  
  You can also run:  
  
-   ./prerun_checkjob 
+   ./prerun_checkjob.sh  
 
  to make sure you have things in place and calculate how much diskspace 
  you might use.  (note! This script only properly calculates the diskspace 
@@ -113,11 +113,11 @@ The basic workflow of this directory structure is described here.
  A number of sbatch templates and example namd config files are stored 
  here for you to modify for your specific job.  ie) 
 
-  sbatch_start         -  for setting up the equilibration step     
-  sim_opt.conf         -  the configuration file for the optimization step
+ sbatch_start        -  for setting up the equilibration step     
+ sim_opt.conf        -  the configuration file for the optimization step
 
-  sbatch_production    -  for the production runs    
-  sim_production.conf  -  the configuration file for the production runs
+ sbatch_production   -  for the production runs    
+ sim_production.conf -  the configuration file for the production runs
 
 
 2b. Benchmark your sims.   /Setup_and_Config/Benchmarking  
@@ -137,42 +137,44 @@ The basic workflow of this directory structure is described here.
 
 -From /Setup_and_Config use:
 
-  ./create_job_directories  
+  ./create_job_directories.sh  
 
- to create your job directories in /MainJob_dir and then
+to create your job directories in /MainJob_dir use:
 
-  ./populate_config_files   
+  ./populate_config_files.sh   
 
- to fill these directories with input files. ( You can also use this 
- script to update the input files in the job directories while a production 
- run is running. ) 
+to fill these directories with input files. ( You can also use this 
+script to update the input files in the job directories while a production 
+run is running. ) 
     
 
 3. Run/manage  your jobs.          /Top_directory
 
 - From /Simulation use the script: 
-   ./start_my_jobs         to start your simulations. 
+   ./start_my_jobs.sh         to start your simulations. 
     
-  This will descend into each directory in /MainJob_dir and launch  
-  'sbatch sbatch_start'     
-  This in turn will run the equilibration simulation before starting 
-  'sbatch sbatch_production' 
-  This will generate production data stored in each job directory. 
+ This will descend into each directory in /MainJob_dir and launch  
+ 'sbatch sbatch_start'     
+
+ This in turn will run the equilibration simulation before starting 
+ 'sbatch sbatch_production' 
+ This will generate production data stored in each job directory. 
     
-  If you need to stop your jobs you can do so with:
+ If you need to stop your jobs you can do so with:
 
-    ./stop_all_jobs_gently 
+  ./stop_all_jobs_gently.sh 
 
-    or 
+  or 
 
-    ./stop_all_jobs_immediately 
+  ./stop_all_jobs_immediately.sh 
 
  The advantage with the first is that you can restart your jobs later with: 
 
-   ./custom_start_all_production_jobs
+  ./custom_start_all_production_jobs.sh
 
-    While the jobs are running you can check on their progress with: 
-    ./monitor_all_jobs
+ While the jobs are running you can check on their progress with: 
+
+  ./monitor_all_jobs.sh
 
 
 ######################  
@@ -184,7 +186,7 @@ perform a recovery which restores your files to the last known good point. To do
 this, first make sure all your jobs are stopped, (try ./stop_all_jobs_immediately)
 and then run the script:
 
-    ./custom_cleanup_crashed_jobs
+    ./crashed_job_recovery_script.sh
 
 This should take you into each directory to manually inspect the outputfiles where 
 you can declare the last good outputfile. The script will then scrub subsequent "bad" 
@@ -214,13 +216,13 @@ You can remove them there with a "rm *.bad" command.  Use with caution!
 
 Once you have setset your directories, you can then simply restart the jobs using: 
 
- ./custom_start_all_production_jobs
+ ./custom_start_all_production_jobs.sh
    
 
 *** If your jobs are a total mess and you wish to remove all data and 
     start again you may do so from the directory /Setup_and_Config/ using:
 
-  ./erase_all_data_cleanup_script 
+  ./erase_all_data_cleanup_script.sh 
 
 
  CAREFUL, this will do what it says! 
@@ -229,10 +231,12 @@ Once you have setset your directories, you can then simply restart the jobs usin
 4. Analyse your results.     /Analysis
 
 - Once all your jobs are done, you can go into this directory and pool all the 
-  simulation data from all the directories and run some basic analysis as well 
-  as ligand and protein backbone clustering. 
-  This can also help make the files more manageable by creating a subset of data 
-  where all the water and hydrogens are removed. 
+ simulation data from all the directories and run some basic analysis as well 
+ as ligand and protein backbone clustering. 
+ This can also help make the files more manageable by creating a subset of data 
+ where all the water and hydrogens are removed. 
+ Be sure to look at the README there! 
+
 
 5.  Writeup, make movies.    /Project/
 

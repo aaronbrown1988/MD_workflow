@@ -1,4 +1,4 @@
-#-------------------------------------------------------------------------
+#------------------------------------------------------------------------
 #  Notes for Setup_and_Config directory. 
 #                                                          Mkuiper Jan 2012
 #-------------------------------------------------------------------------
@@ -19,10 +19,14 @@ in a directory structure based on /Setup_and_Config/JobTemplate
 many jobs instances to run  (from 1 to 999)
 
 To create the job directories, simply run: 
-./create_job_directories
 
-This will create incrimented job directories copied from /JobTemplate as 
+ ./create_job_directories
+
+
+This will create incremented job directories copied from "/JobTemplate" as 
 specified in "master_config_file" with the "BaseDirName" variable
+Note: The Jobtemplate can take any structure you like!  The default scripts 
+use this particular structure to direct output. 
 
 Make sure to edit your optimization and production configuration files to point 
 to your structure input files and parameter files.  
@@ -37,10 +41,22 @@ Once you have chosen the numbers of cores to use and made the appropriate
 changes into the sbatch files make sure to populate your job directories
 with your input files. Use:
 
-./populate_config_files
+ ./populate_config_files
+
 
 ( you can also use this script to make bulk updates to your job directories 
   on the fly) 
+
+Occasionally you might want to create a new simulation directory but without 
+the existing data you already have.  You can do this easily with: 
+
+ ./clone_this_directory_without_data
+
+This will clone your existing directory without most of the data, (but leaving the 
+BUILD_DIR intact) to:  temporary_cloned_md_workflow  which you can then rename 
+to something more appropriate. 
+
+
 
 In the top main directory there are scripts to start, stop and monitor all 
 simulations at once.  After you have created your directories and populated with 
@@ -58,7 +74,9 @@ or
 ./stop_all_jobs_immediately.sh
 
 The first option is preferable and allows the job to finish its current block, 
-which can be restarted at a later date.  The second will immedtiatley stop the 
+which can be restarted at a later date.  The second will immediately stop the 
 job, but may leave untidy or corrupted data. 
+
+There are more control options to be found in the README files in the top directory.
 
 
