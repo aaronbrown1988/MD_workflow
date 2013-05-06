@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Namd project job directory notes.  v0.4    		May 2013  MKuiper VLSCI
+# Namd project job directory notes.  (v0.4)    		May 2013  MKuiper VLSCI
 #------------------------------------------------------------------------------
 
 # Disclaimer! - I have made this workflow to help manage my own projects, 
