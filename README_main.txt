@@ -50,7 +50,6 @@ A basic workflow is described after the directory structure.
 # Directory Structure Map Overview:
 #-------------------------------------------------------------------------------
 
-                   
 |__Top_directory  -- The place for running simulations.	                 
   |                  Launch and control jobs from here. 
   |
