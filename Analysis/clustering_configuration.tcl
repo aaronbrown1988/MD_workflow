@@ -4,7 +4,7 @@
 #-- Protein conformation analysis:---------------------------------------------
 
 set pc    10   ;# number of protein backbone clusters to generate: 
-set proco 2    ;# protein backbone cutoff factor
+set proco 5    ;# protein backbone cutoff factor
 
 set sel_protein "protein and not hydrogen"  ;# protein selection 
 

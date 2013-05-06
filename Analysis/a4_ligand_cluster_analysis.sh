@@ -8,5 +8,4 @@
 # launch script: 
 
  ../Scripts/Analysis_Scripts/a4_ligand_cluster_analysis.tcl
- 
 # 

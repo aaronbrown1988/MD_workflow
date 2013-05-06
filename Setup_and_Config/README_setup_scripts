@@ -1,6 +1,5 @@
-#------------------------------------------------------------------------
-#  Notes for Setup_and_Config directory. 
-#                                                          Mkuiper Jan 2012
+#-----------------------------------------------------------------------
+#  Notes for Setup_and_Config directory.                  mk  May 2013
 #-------------------------------------------------------------------------
 
 This directory contains scripts to help set up and manage jobs on a large cluster. 

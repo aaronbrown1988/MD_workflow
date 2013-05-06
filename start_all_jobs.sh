@@ -6,6 +6,7 @@
 # This will start all jobs in the job directories under ../MainJob_dir 
 # 
 # launch script: 
+
  Scripts/Job_management_Scripts/start_all_jobs
  
 # 

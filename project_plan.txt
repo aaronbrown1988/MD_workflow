@@ -1,14 +1,14 @@
-#----------------------------------------------------------------------------|
-#  Project Planning:                                      May 2013           |
-|----------------------------------------------------------------------------|
-| This document is designed to help the user properly plan their molecular   |
-| dynamics experiments.  We encourage users to fill this out prior to a      |
-| MD experiment, to both justify the rationale and also keep a record for    |
-| future reference.  An experiment that is not written up or used in further |
-| work may as well not be run at all!!                                       |
-|                                                                            |
-| To aid this process we'll subscribe to 'Heilmeier's catechisms'            |
-#----------------------------------------------------------------------------|
+#------------------------------------------------------------------------------|
+#  Project Planning:                                      May 2013             |
+|------------------------------------------------------------------------------|
+| This document is designed to help the user properly plan their molecular     |
+| dynamics experiments.  We encourage users to fill this out prior to a        |
+| MD experiment, to both justify the rationale and also keep a record for      |
+| future reference.  An experiment that is not written up or used in further   |
+| work may as well not be run at all!!                                         |
+|                                                                              |
+| To aid this process we'll subscribe to 'Heilmeier's catechisms'              |
+#------------------------------------------------------------------------------|
 Date:  
 
 Project title:
@@ -17,7 +17,7 @@ Members:
 
 VLSCI Project:
 
-#-Heilmeier-catechisms-------------------------------------------------------|
+#-Heilmeier-catechisms---------------------------------------------------------|
 
 1) What are you trying to do? 
 
@@ -47,7 +47,7 @@ VLSCI Project:
 
 
 # Experimental Design: 
-#-------------------------------------------------------------------------|
+#------------------------------------------------------------------------------|
 
 Equilibrium stage?  
 
@@ -63,9 +63,8 @@ Statistical sampling?
 
 Analysis?  What will you measure from this? 
 
-
 What figures or representation can you make from the results?  Is this 
-work going result in a publication. 
+work going result in a publication? 
 
 
 
