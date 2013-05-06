@@ -21,13 +21,23 @@ There are a number of sub_directories and scripts here to help you do this:
 
 - a1_extract_all_my_data.sh       - script to extract paths to dcd data in 
                                     /MainJob_dir
+
 - a2_create_no_H_no_H2O_dcd.sh    - script to create a greatly reduced data 
                                     file containing not water or hydrogen.  
+
+- a3_protein_backbone_cluster_analysis.sh
+
 
 - a4_ligand_cluster_analysis.sh
 
 - clustering_configuration.tcl   - configuration script for analysis. 
 #------------------------------------------------------------------------------
+
+The scripts above are designed to be run in order,  a1_, a2_, ..etc but certain 
+analysis can be omitted if required. 
+
+
+
 
 
 
