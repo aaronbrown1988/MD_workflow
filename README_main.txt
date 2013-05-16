@@ -1,15 +1,15 @@
-#------------------------------------------------------------------------------
-# Namd project job directory notes.  (v0.4)    		May 2013  MKuiper VLSCI
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------#
+# Namd project job directory notes.  (v0.4)   	   May 2013  MKuiper VLSCI    #
+#-----------------------------------------------------------------------------#
 
-# Disclaimer! - I have made this workflow to help manage my own projects, 
-- you are free to use it, but it may not be entirely suitable for what you are 
-trying to achieve.  Please email feedback, bugs or suggestions to:
+#Disclaimer! - I have made this workflow originally to help manage my own 
+projects, - you are free to use it, but it may not be entirely suitable for 
+what you are trying to achieve.  Please email feedback, bugs or suggestions to:
 mkuiper@unimelb.edu.au
 
-#------------------------------------------------------------------------------
+#
 # Outline:
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------#
 
 This project directory structure is designed to help streamline the management 
 of simulation setup, running jobs, analysis and the writing of manuscripts.
@@ -18,9 +18,9 @@ BlueGene/Q cluster, it could quite easily adapted for running other programs
 such as Amber and Gromacs. 
 
 
-#------------------------------------------------------------------------------ 
+# 
 # The philosophy:
-#------------------------------------------------------------------------------ 
+#-----------------------------------------------------------------------------# 
 
 This folder came about to help manage and organize the running of a few to 
 thousands of simultaneous molecular dynamics simulations to take advantage of 
@@ -48,7 +48,7 @@ A basic workflow is described after the directory structure.
 
 #
 # Directory Structure Map Overview:
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------# 
 
 |__Top_directory  -- The place for running simulations.	                 
   |                  Launch and control jobs from here. 
@@ -77,9 +77,9 @@ A basic workflow is described after the directory structure.
        |___ProjectPlan   - A space to document and plan the project. 
           
  
-#------------------------------------------------------------------------------
-#   The general work flow:   
-#------------------------------------------------------------------------------
+#
+# The general work flow:   
+#-----------------------------------------------------------------------------# 
 
 Before starting any new project it is always a good idea to make a plan with 
 regards to the work and expected outcomes. For this we a simple text document 
@@ -177,9 +177,9 @@ run is running. )
   ./monitor_all_jobs.sh
 
 
-######################  
-#  Crash recovery:   #
-######################
+#  
+#  Crash recovery: 
+#-----------------------------------------------------------------------------# 
 
 In the event of a system crash, such as a power outage or hardware failure one
 can perform a recovery which restores your files to the last known good point.
@@ -203,10 +203,12 @@ might see:
 -rw-r--r-- 1 mike mike  3789024 Sep  7 06:08 2012-09-06-17.57.calmodulin_run2_.5.dcd
 -rw-r--r-- 1 mike mike 15373446 Sep  7 06:08 2012-09-07-06.08.calmodulin_run2_.4.dcd
 
-Looking at the size of the files we notice that job 2012-09-06-17.57.calmodulin_run2_.5.dcd
-has a file size of 3789024 where preceeding files sizes are the same at  21931876
-As we expect the files sizes to be almost identical in size, we can assume that 
-something when wrong at that step.  Therfore the last "good" file is 
+Looking at the size of the files we notice that job:
+ 2012-09-06-17.57.calmodulin_run2_.5.dcd
+
+has a file size of 3789024 where preceeding files sizes are the same at
+21931876 As we expect the files sizes to be almost identical in size, we can 
+assume that something when wrong at that step. Therfore the last "good" file is 
 
 2012-09-06-17.52.calmodulin_run2_.6.dcd
 
@@ -228,10 +230,10 @@ Once you have setset your directories, you can then simply restart the jobs usin
 
   ./erase_all_data_cleanup_script.sh 
 
-
  CAREFUL, this will do what it says! 
-
      
+
+
 4. Analyse your results.     /Analysis
 
 - Once all your jobs are done, you can go into this directory and pool all the 
@@ -247,6 +249,5 @@ Once you have setset your directories, you can then simply restart the jobs usin
 - the /Project directory is all about writing up the associated manuscript
   and making any illustrations or movies from the simualtion files. 
 
-
------
+#-----------------------------------------------------------------------------# 
 
