@@ -2,58 +2,60 @@
 # Namd project job directory notes.  (v0.4)   	   May 2013  MKuiper VLSCI    #
 #-----------------------------------------------------------------------------#
 
-#Disclaimer! - I have made this workflow originally to help manage my own 
-projects, - you are free to use it, but it may not be entirely suitable for 
-what you are trying to achieve.  Please email feedback, bugs or suggestions to:
-mkuiper@unimelb.edu.au
+# Disclaimer! - I have made this workflow originally to help manage my own 
+ projects, - you are free to use it, but it may not be entirely suitable for 
+ what you are trying to achieve. Please email feedback, bugs or suggestions to:
+ mkuiper@unimelb.edu.au
 
 #
 # Outline:
 #-----------------------------------------------------------------------------#
 
-This project directory structure is designed to help streamline the management 
-of simulation setup, running jobs, analysis and the writing of manuscripts.
-Though this directory structure is optimized for NAMD operating on a large 
-BlueGene/Q cluster, it could quite easily adapted for running other programs 
-such as Amber and Gromacs. 
+ This project directory structure is designed to help streamline the management 
+ of simulation setup, running jobs, analysis and the writing of manuscripts.
+ Though this directory structure is optimized for NAMD operating on a large 
+ BlueGene/Q cluster, it could quite easily adapted for running other programs 
+ such as Amber and Gromacs. 
 
 
 # 
 # The philosophy:
 #-----------------------------------------------------------------------------# 
 
-This folder came about to help manage and organize the running of a few to 
-thousands of simultaneous molecular dynamics simulations to take advantage of 
-the large capacity of the BlueGene/Q cluster.  
+ This folder came about to help manage and organize the running of a few to 
+ thousands of simultaneous molecular dynamics simulations to take advantage of 
+ the large capacity of the BlueGene/Q cluster.  
 
-The directory structure is desiged to be self-contained; that is having all 
-the files necessary to run a simulation. The /Project directory is meant to be 
-the area to work on manuscripts and illustrations while the /Setup_and_Config 
-directory is where the setup,  
+ The directory structure is desiged to be self-contained; that is having all 
+ the files necessary to run a simulation. The /Project directory is meant to be 
+ the area to work on manuscripts and illustrations while the /Setup_and_Config 
+ directory is where the setup,  
 
-This directory structure is intended for a standard namd job comprising of an 
-equilibration run followed by production runs.  Output files are date-stamped 
-and moved to various folders designed to keep data ordered so as to be able to 
-replicate or validate any point of the simulation.  
+ This directory structure is intended for a standard namd job comprising of an 
+ equilibration run followed by production runs.  Output files are date-stamped 
+ and moved to various folders designed to keep data ordered so as to be able to 
+ replicate or validate any point of the simulation.  
 
-It also helps addresses the problem of group quota on the queuing system by 
-running many smaller jobs rather than fewer longer jobs to get a desired 
-simulation length. This approach can also help better utilise the machine 
-resources as well as providing better protection against data corruption in 
-case of hardware or simulation failures over the course of a long run.
-All trajectory data can be trivially consolidated into a single file on 
-completion of the runs from the /Analysis folder
-
-A basic workflow is described after the directory structure. 
+ It also helps addresses the problem of group quota on the queuing system by 
+ running many smaller jobs rather than fewer longer jobs to get a desired 
+ simulation length. This approach can also help better utilise the machine 
+ resources as well as providing better protection against data corruption in 
+ case of hardware or simulation failures over the course of a long run.
+ All trajectory data can be trivially consolidated into a single file on 
+ completion of the runs from the /Analysis folder
+ 
+ A basic workflow is described after the directory structure. 
 
 #
 # Directory Structure Map Overview:
 #-----------------------------------------------------------------------------# 
 
-|__Top_directory  -- The place for running simulations.	                 
-  |                  Launch and control jobs from here. 
+|__Top_directory  
+  |                -- The place for running simulations.	                 
+  |                   Launch and control jobs from here. 
   |
   |__Analysis          - where analysis scripts are run   
+  |   |
   |   |__Data          - where all the processed data ends up
   |
   |__BUILD_DIR         - where models are built. 
@@ -61,19 +63,23 @@ A basic workflow is described after the directory structure.
   |__Examples          - random example files 
   |
   |__InputFiles        - where all the input files are kept
+  |    |
   |    |__Parameters   - where the parameter files are
   | 
-  |__MainJob_dir       - where all the jobs are run 
+  |__MainJob_dir       - where all the job directories are run 
   |
-  |__Setup_and_Config  - a very important directory where setup scripts are kept  
+  |__Setup_and_Config  - an important directory where setup scripts are kept  
+  |    |
   |    |__Benchmarking - special directory for benchmarking and optimizing jobs  
   |    |__JobTemplate  - directory template for individual jobs 
   |
   |__Scripts           -  all useful scripts kept in here
+  |    |__             .. 
   |  
   |__Project           --- For publication purposes
+       |   
        |___Manuscripts   - a space for writing and storing images
-       |___MovieBox	   - a space for rendering movies                       
+       |___MovieBox	 - a space for rendering movies                       
        |___ProjectPlan   - A space to document and plan the project. 
           
  
@@ -81,29 +87,29 @@ A basic workflow is described after the directory structure.
 # The general work flow:   
 #-----------------------------------------------------------------------------# 
 
-Before starting any new project it is always a good idea to make a plan with 
-regards to the work and expected outcomes. For this we a simple text document 
-called "Project_plan" in the top directory. It is a good place for documenting 
-the your original intentions and noting your project design.  This can be 
-especially important when looking back on an older project and remembering the 
-original rationale! Do make sure to spend time planning your work.
+ Before starting any new project it is always a good idea to make a plan with 
+ regards to the work and expected outcomes. For this we a simple text document 
+ called "Project_plan" in the top directory. It is a good place for documenting 
+ the your original intentions and noting your project design.  This can be 
+ especially important when looking back on an older project and remembering the 
+ original rationale! Do make sure to spend time planning your work.
 
 
-The basic workflow of this directory structure is described here. 
-(There are more specific README files in each of the directories.) 
+ The basic workflow of this directory structure is described here. 
+ (There are more specific README files in each of the directories.) 
 
 1. Build input models.    /BUILD_DIR
 
-- The place to do this is under /BUILD_DIR/
-- most topology and parameter files can be found under /Parameters 
-- Once complete, place the relevant inputfiles under /InputFiles 
-  and make sure you have the right parameter files under /Parameters
+ - The place to do this is under /BUILD_DIR/
+ - most topology and parameter files can be found under /Parameters 
+ - Once complete, place the relevant inputfiles under /InputFiles 
+   and make sure you have the right parameter files under /Parameters
 
 2a. Setup your jobs.      /Setup_and_Config
 
 - Under /Setup_and_config you can decide how many simulations to set up
- by editing the  'master_config_file'  
- You can also run:  
+  by editing the  'master_config_file'  
+  You can also run:  
  
    ./prerun_checkjob.sh  
 
@@ -143,9 +149,9 @@ to create your job directories in /MainJob_dir use:
 
   ./populate_config_files.sh   
 
-to fill these directories with input files. ( You can also use this 
-script to update the input files in the job directories while a production 
-run is running. ) 
+ to fill these directories with input files. ( You can also use this 
+ script to update the input files in the job directories while a production 
+ run is running. ) 
     
 
 3. Run/manage  your jobs.          /Top_directory
@@ -181,19 +187,19 @@ run is running. )
 #  Crash recovery: 
 #-----------------------------------------------------------------------------# 
 
-In the event of a system crash, such as a power outage or hardware failure one
-can perform a recovery which restores your files to the last known good point.
-To do this, first make sure all your jobs are stopped, 
-(try ./stop_all_jobs_immediately) and then run the script:
+ In the event of a system crash, such as a power outage or hardware failure one
+ can perform a recovery which restores your files to the last known good point.
+ To do this, first make sure all your jobs are stopped, 
+ (try ./stop_all_jobs_immediately) and then run the script:
 
     ./recover_and_cleanup_all_crashed_jobs.sh
 
-This should take you into each directory to manually inspect the outputfiles 
-where you can declare the last good outputfile. The script will then scrub 
-subsequent "bad" output and restore data from the last "good" simulation. 
+ This should take you into each directory to manually inspect the outputfiles 
+ where you can declare the last good outputfile. The script will then scrub 
+ subsequent "bad" output and restore data from the last "good" simulation. 
  
-For example, when one runs the script after a crash in the OutputFiles/ you 
-might see: 
+ For example, when one runs the script after a crash in the OutputFiles/ you 
+ might see: 
 
 -rw-r--r-- 1 mike mike 21931876 Sep  4 17:54 2012-09-04-05.44.calmodulin_run2_.10.dcd
 -rw-r--r-- 1 mike mike 21931876 Sep  5 05:54 2012-09-04-17.54.calmodulin_run2_.9.dcd
@@ -203,20 +209,20 @@ might see:
 -rw-r--r-- 1 mike mike  3789024 Sep  7 06:08 2012-09-06-17.57.calmodulin_run2_.5.dcd
 -rw-r--r-- 1 mike mike 15373446 Sep  7 06:08 2012-09-07-06.08.calmodulin_run2_.4.dcd
 
-Looking at the size of the files we notice that job:
+ Looking at the size of the files we notice that job:
  2012-09-06-17.57.calmodulin_run2_.5.dcd
 
-has a file size of 3789024 where preceeding files sizes are the same at
-21931876 As we expect the files sizes to be almost identical in size, we can 
-assume that something when wrong at that step. Therfore the last "good" file is 
+ has a file size of 3789024 where preceeding files sizes are the same at
+ 21931876 As we expect the files sizes to be almost identical in size, we can 
+ assume that something when wrong at that step. Therfore the last "good" file is 
 
-2012-09-06-17.52.calmodulin_run2_.6.dcd
+ 2012-09-06-17.52.calmodulin_run2_.6.dcd
 
-which we enter when prompted. (cut and paste works well here.) 
+ which we enter when prompted. (cut and paste works well here.) 
 
-Be careful to pick the last good file,  - data after that point will be removed
-and the last good restart files retrieved ready to restart the simulations from
-that point onwards. 
+ Be careful to pick the last good file,  - data after that point will be removed
+ and the last good restart files retrieved ready to restart the simulations from
+ that point onwards. 
 
 Note:  Actually most bad files are moved to /Errors with a suffix ".bad"
 You can remove them there with a "rm *.bad" command.  Use with caution!

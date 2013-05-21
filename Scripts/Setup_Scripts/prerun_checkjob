@@ -143,7 +143,7 @@ c0="\e[39m"
  
 echo -e "\n$c1 Job Precheck Summary:" 
 echo -e "$c1 -----------------------------------------------------------------------------------------------$c0" 
-printf  "$c2 Directory basename:$c0       %-12s\n" $Base 
+printf  "$c2 Directory basename:$c0       %-12s\n" $BaseDirName 
 printf  "$c2 Optimize job basename:$c0    %-12s\n" $jobname_opt 
 printf  "$c2 Production job basename:$c0  %-12s\n" $jobname_prod 
 printf  "$c2 sbatch_start script:$c0      %-12s\t $c9 %s $c0\n" $sbatch_start      $sb_st  
