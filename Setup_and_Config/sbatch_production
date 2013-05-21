@@ -147,7 +147,7 @@ then
  mv pbs_*.o* JobLog/;
  mv slurm-*  JobLog/;
  mv core*    Errors/;
- echo -e "P:Finshed" >.job_status
+ echo -e "P:Finished" >.job_status
 
 ## -- create a dcd file loader .vmd file in /OutputFiles 
  cd OutputFiles

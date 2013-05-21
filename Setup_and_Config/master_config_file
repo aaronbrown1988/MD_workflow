@@ -5,14 +5,13 @@
 
 account=Change_me         # vlsci project account:  ( for example:  VR0123 )
 nodes=2                   # number of nodes to use:  ( must be a multiple of 2, or 1)  
-ntpn=64                   # number tasks per node:  
 
-# ppn=8                     # Processors per node:  - redundant with pami version of namd
+ntpn=8                    # number tasks per node:  
+ppn=8                     # Processors per node:  - redundant with pami version of namd
 
 walltime=24:0:0           # walltime: (Format: Hours:Minutes:Seconds for example: 24:0:0 )
 
-modulefile="namd-xl-pami\/2.9"        # module file  ("\" character helps with 'sed' lines) 
-#modulefile="namd-xl-pami-smp\/2.9"   # module file  ("\" character helps with 'sed' lines) 
+modulefile="namd-xl-pami-smp\/2.9"   # module file  ("\" character helps with 'sed' lines) 
                                       # use 'module avail' on avoca to see modules
 # -- Job setup -------------------------------------------------------------------------
 sims=4        # -- Number of job directories to create.  Each replica simulation will spawn a new 
