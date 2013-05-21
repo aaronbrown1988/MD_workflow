@@ -17,7 +17,7 @@ echo -e "\n Cloning directory without (most!) data. "
 
 rsync -azt --exclude='*.dcd *.BAK *.tga *.jpg *.dat *.gitkeep MainJob_dir/* Analysis/Data/* Analysis/ligand_cluster_data/* Analysis/protein_cluster_data/* Analysis/temp_data_dir/* ' ../* ../../temporary_cloned_md_workflow
 
-echo -e " Cloned a copy of this directory (without data) to:  ../../temporary_cloned_md_wokflow " 
+echo -e " Cloned a copy of this directory (without output data) to:  ../../temporary_cloned_md_wokflow " 
 echo -e "\n Make sure to rename this directory!" 
 
 exit 
