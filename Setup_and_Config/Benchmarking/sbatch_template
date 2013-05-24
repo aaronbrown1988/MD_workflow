@@ -50,7 +50,8 @@ basename="$date2.$jobname"
 # - mine timing / seed data: 
 
 timing=$(../../Scripts/Tools/timing_data_miner OutputText/$basename.out);
-echo -e "n# $nodes\ttpn:$ntpn\tppn:$ppn\t$timing" >> summary_benchmarks.txt
+
+echo -e "$nodes\t$ntpn\t$ppn\t$timing" >> summary_benchmarks.txt
 
 #cleanup:
 rm *.old

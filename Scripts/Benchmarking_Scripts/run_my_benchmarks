@@ -63,19 +63,22 @@ echo -e "optimize:\t$opt_timest " >> summary_benchmarks.txt
 echo -e "production:\t$bench_timest \n" >> summary_benchmarks.txt
 echo -e "no of atoms:\t$natoms \n" >> summary_benchmarks.txt
 
-echo -e "     \t tasks\t     \t     \t seconds\t\t nanoseconds" >> summary_benchmarks.txt
-echo -e "nodes\t /node\t ppn \tcores\t  /step \t\t  per day   " >> summary_benchmarks.txt
+echo -e "     \ttasks\t   \t     \tseconds\tnanoseconds" >> summary_benchmarks.txt
+echo -e "nodes\t/node\tppn\tcores\t /step \t  per day  " >> summary_benchmarks.txt
+        "%5s  \t%5.4f s/step%7.4f ns/day\t seed:%s \n", $3, $2, ((0.0864*$1)/$2), $5 }
+
+
 
 # adjust nodelist to try depending on size of simulation:------------
-nodelist="16 8 4 2 1" 
+nodelist="8 4 2 1" 
 if [ "$natoms" -gt "100000" ];then 
- nodelist="32 16 8 4 2 1"
+ nodelist="16 8 4 2 1"
 fi
 if [ "$natoms" -gt "500000" ];then 
- nodelist="64 32 16 8 4" 
+ nodelist="64 32 16 8 4 2" 
 fi
 if [ "$natoms" -gt "1000000" ];then 
- nodelist="256 128 64 32 16 8"
+ nodelist="256 128 64 32 16 8 4 "
 fi
 
 

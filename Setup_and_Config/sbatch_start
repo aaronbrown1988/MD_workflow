@@ -71,7 +71,11 @@ jfc2=$(date +%s);                                                   # jobfailche
 let runtime=$jfc2-$jfc1;                                             # job run time.               
 jobhours=$(echo $runtime | awk '{printf "%.3f hours", $1/3600}');  
 timing=$(../../Scripts/Tools/timing_data_miner OutputText/$basename.out); # mine timing data
-echo $basename  $jobhours $timing  >>JobLog/timing_data_log.txt;    # log timing data
+
+echo "nodes   tpn     ppn     cores    s/step   ns/day " >>JobLog/timing_data_log.txt
+echo -e "$nodes\t$ntpn\t$ppn\t$timing" >>JobLog/timing_data_log.txt
+echo $basename  $jobhours              >>JobLog/timing_data_log.txt;    # log timing data
+
 j=$(cat .jobdir_id );
 c=$(cat .current_job_id.txt); 
 
