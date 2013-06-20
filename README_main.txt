@@ -26,10 +26,12 @@
  thousands of simultaneous molecular dynamics simulations to take advantage of 
  the large capacity of the BlueGene/Q cluster.  
 
- The directory structure is desiged to be self-contained; that is having all 
+ The directory structure is designed to be self-contained; that is having all 
  the files necessary to run a simulation. The /Project directory is meant to be 
- the area to work on manuscripts and illustrations while the /Setup_and_Config 
- directory is where the setup,  
+ the area to work on manuscripts and illustrations while the /BUILD_DIR  is 
+ where users can build up their simulations.  The /Setup_and Config directory 
+ is where users setup and optimize and benchmark their systems before launching
+ production jobs.   
 
  This directory structure is intended for a standard namd job comprising of an 
  equilibration run followed by production runs.  Output files are date-stamped 
