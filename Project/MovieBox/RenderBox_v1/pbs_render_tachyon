@@ -32,12 +32,11 @@ for i in *
 
 ## render command: 
 
-"/usr/local/vmd/1.9.1-gcc/lib/tachyon_LINUXAMD64" \
--aasamples $aas -res $xres $yres ../Temp/$i -format TARGA -o ../Frames/$i.tga
-
+$tachyon_path -aasamples $aas -res $xres $yres ../Temp/$i -format TARGA -o ../Frames/$i.tga
 
 ##  post rendering processing: (optional!) 
-# convert from tga format to jpg
+# convert from tga format to jpg, remove old tga if successful. 
+
  convert  ../Frames/$i.tga ../Frames/$i.jpg
 
  if [ -f ../Frames/$i.jpg ]; 
