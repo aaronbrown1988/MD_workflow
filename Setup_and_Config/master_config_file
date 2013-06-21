@@ -34,7 +34,7 @@ production_script="sim_production.conf"
 
 # -- Miscelaneous: (don't usually need to change this:) 
 
-jobfailtime=120;     # least number seconds of job time to assume failed job (default:120) 
+jobfailtime=300;     # least number seconds of job time to assume failed job (default:300) 
 diskspacecutoff=96;  # % diskspace quota remaining before cancelling jobs 
 
 # ligand docking funnel: (Experimental)
