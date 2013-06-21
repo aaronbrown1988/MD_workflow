@@ -242,7 +242,7 @@ Once you have setset your directories, you can then simply restart the jobs usin
      
 
 
-4. Analyse your results.     /Analysis
+4. Analyze your results.     /Analysis
 
 - Once all your jobs are done, you can go into this directory and pool all the 
  simulation data from all the directories and run some basic analysis as well 
