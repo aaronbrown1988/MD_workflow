@@ -107,7 +107,7 @@
  - Once complete, place the relevant inputfiles under /InputFiles 
    and make sure you have the right parameter files under /Parameters
 
-2a. Setup your jobs.      /Setup_and_Config
+2. Prepare your input files.      /Setup_and_Config
 
 - Under /Setup_and_config you can decide how many simulations to set up
   by editing the  'master_config_file'  
@@ -128,7 +128,7 @@
  sim_production.conf -  the configuration file for the production runs
 
 
-2b. Benchmark your sims.   /Setup_and_Config/Benchmarking  
+3. Benchmark your sims.   /Setup_and_Config/Benchmarking  
 
 - In order to check your jobs and optimize the numbers of cores used per 
   simulation, make sure to go into /Setup_and_Config/Benchmarking  
@@ -141,7 +141,7 @@
   running a lot of simulations to find that there is an error in the model!   
 
 
-2c. Create and prepare job directories.
+4. Create and prepare job directories.
 
 -From /Setup_and_Config use:
 
@@ -156,7 +156,7 @@ to create your job directories in /MainJob_dir use:
  run is running. ) 
     
 
-3. Run/manage  your jobs.          /Top_directory
+5. Run/manage  your jobs.          /Top_directory
 
 - From /Simulation use the script: 
    ./start_my_jobs.sh         to start your simulations. 
@@ -242,7 +242,7 @@ Once you have setset your directories, you can then simply restart the jobs usin
      
 
 
-4. Analyze your results.     /Analysis
+6. Analyze your results.     /Analysis
 
 - Once all your jobs are done, you can go into this directory and pool all the 
  simulation data from all the directories and run some basic analysis as well 
@@ -252,7 +252,7 @@ Once you have setset your directories, you can then simply restart the jobs usin
  Be sure to look at the README there! 
 
 
-5.  Writeup, make movies.    /Project/
+7.  Writeup, make movies.    /Project/
 
 - the /Project directory is all about writing up the associated manuscript
   and making any illustrations or movies from the simualtion files. 
