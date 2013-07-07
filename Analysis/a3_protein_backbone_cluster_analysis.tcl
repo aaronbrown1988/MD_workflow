@@ -1,16 +1,14 @@
 # Cluster analysis: 
 # protein conformation rmsd clustering: 
 
+# read in configuration file: 
+source clustering_configuration.tcl
 set out [open "summary.txt" a]
 
 # -- protein backbone clustering------------------------------------------------------
 
 animate delete  beg 0 end -1 skip 0 top
-mol new no_water_no_hydrogen.psf type {psf} first 0 last -1 step 1 waitfor all
 mol addfile no_water_no_hydrogen.dcd type {dcd} first 0 last -1 step 1 waitfor all
-
-# read in configuration file: 
-source clustering_configuration.tcl
 
 puts " starting protein cluster analysis: - this may take some time!"
 set sel [atomselect top "$sel_protein" ]
@@ -31,6 +29,7 @@ for { set j 0 } { $j < $pc } { incr j } {
 # -- use catdcd to merge protein cluster groups:-------------------------------------- 
 exec Scripts/merge_protein_clusters_script $pc 
 puts " merging protein backbone " 
+sleep 5
 
 source Scripts/trajectory_smooth.tcl 
 source clustering_configuration.tcl

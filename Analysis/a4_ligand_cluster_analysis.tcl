@@ -6,8 +6,8 @@
 # more than one of the same ligand (with different chain names)
 
 set out [open "summary.txt" a]
-
 # -- re-read reduced data:--------------------------------------------------------- 
+mol delete top
 mol new no_water_no_hydrogen.psf type {psf} first 0 last -1 step 1 waitfor all
 mol addfile no_water_no_hydrogen.dcd type {dcd} first 0 last -1 step 1 waitfor all
 
@@ -56,6 +56,7 @@ exec Scripts/merge_ligand_clusters_script $lc
 source Scripts/trajectory_smooth.tcl 
 
 puts " Merging ligand clusters "
+sleep 2;
 
 puts $out " ligand cluster cutoff:  $ligco"                   
 puts      " ligand cluster cutoff:  $ligco"
